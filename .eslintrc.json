@@ -1,0 +1,145 @@
+{
+  "root": true,
+  "ignorePatterns": ["**/*"],
+  "plugins": ["@nrwl/nx", "unused-imports", "simple-import-sort", "import"],
+  "extends": ["plugin:prettier/recommended"],
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "rules": {
+        "@nrwl/nx/enforce-module-boundaries": [
+          "error",
+          {
+            "enforceBuildableLibDependency": true,
+            "allow": [],
+            "depConstraints": [
+              {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:@nrwl/nx/typescript"],
+      "parserOptions": {
+        "project": ["apps/api/tsconfig.*?.json"]
+      },
+      "rules": {
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-floating-promises": ["error", { "ignoreVoid": true }],
+        "@typescript-eslint/await-thenable": "error",
+        "@typescript-eslint/no-for-in-array": "error",
+        "@typescript-eslint/no-misused-promises": "error",
+        "@typescript-eslint/no-unnecessary-type-assertion": "error",
+        "@typescript-eslint/no-unnecessary-type-constraint": "error",
+        "@typescript-eslint/no-unnecessary-type-arguments": "error",
+        "@typescript-eslint/no-unnecessary-condition": "error",
+        "@typescript-eslint/no-unnecessary-boolean-literal-compare": "error",
+        "@typescript-eslint/unbound-method": "error",
+        "no-return-await": "off",
+        "@typescript-eslint/return-await": ["error", "always"],
+        "@typescript-eslint/promise-function-async": "error",
+        "@typescript-eslint/prefer-ts-expect-error": "error",
+        "@typescript-eslint/switch-exhaustiveness-check": "error",
+        "@typescript-eslint/strict-boolean-expressions": "error",
+        "@typescript-eslint/prefer-string-starts-ends-with": "error",
+        "@typescript-eslint/prefer-return-this-type": "error",
+        "@typescript-eslint/prefer-optional-chain": "error",
+        "@typescript-eslint/prefer-nullish-coalescing": "error",
+        "@typescript-eslint/prefer-includes": "error",
+        "@typescript-eslint/prefer-for-of": "error",
+        "@typescript-eslint/prefer-enum-initializers": "error",
+        "@typescript-eslint/prefer-as-const": "error",
+        "@typescript-eslint/consistent-type-imports": "error",
+        "@typescript-eslint/consistent-type-exports": "error",
+        "@typescript-eslint/non-nullable-type-assertion-style": "error",
+        "@typescript-eslint/consistent-indexed-object-style": "error",
+        "@typescript-eslint/ban-types": "error",
+        "camelcase": "off",
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "variable",
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "parameter",
+            "format": ["camelCase"],
+            "leadingUnderscore": "allow"
+          },
+          {
+            "selector": "property",
+            "format": ["camelCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "property",
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "property",
+            "modifiers": ["protected"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "method",
+            "modifiers": ["private"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "method",
+            "modifiers": ["protected"],
+            "format": ["camelCase"],
+            "leadingUnderscore": "require"
+          },
+          {
+            "selector": "typeLike",
+            "format": ["PascalCase"]
+          },
+          {
+            "selector": "enumMember",
+            "format": ["PascalCase"]
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "extends": ["plugin:@nrwl/nx/javascript"],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ],
+  "rules": {
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "varsIgnorePattern": "^_",
+        "args": "after-used",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/named": "error",
+    "import/export": "error",
+    "import/first": "error",
+    "import/no-duplicates": "error",
+    "import/order": "error",
+    "import/newline-after-import": "error"
+  }
+}
