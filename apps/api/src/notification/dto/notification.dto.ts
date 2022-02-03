@@ -2,7 +2,8 @@ import { ArgsType, Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 
-import { UserRelationFilter } from '../../user/dto/user.dto';
+import { StringFilter } from '../../core/dto/string.filter.dto';
+import { UserArgsFilter } from '../../user/dto/user.dto';
 
 @InputType()
 export class NotificationArgsFilter {
@@ -18,11 +19,23 @@ export class NotificationArgsFilter {
   @IsOptional()
   OR?: NotificationArgsFilter[];
 
-  @Field(() => UserRelationFilter, { nullable: true })
+  @Field(() => NotificationArgsFilter, { nullable: true })
   @ValidateNested()
-  @Type(() => UserRelationFilter)
+  @Type(() => NotificationArgsFilter)
   @IsOptional()
-  author?: UserRelationFilter | null;
+  NOT?: NotificationArgsFilter;
+
+  @Field(() => StringFilter, { nullable: true })
+  @ValidateNested()
+  @Type(() => StringFilter)
+  @IsOptional()
+  createdAt?: StringFilter | null;
+
+  @Field(() => UserArgsFilter, { nullable: true })
+  @ValidateNested()
+  @Type(() => UserArgsFilter)
+  @IsOptional()
+  author?: UserArgsFilter | null;
 }
 
 @ArgsType()
@@ -52,19 +65,4 @@ export class NotificationListRelationFilter {
   @Type(() => NotificationArgsFilter)
   @IsOptional()
   none?: NotificationArgsFilter;
-}
-
-@InputType()
-export class NotificationRelationFilter {
-  @Field(() => NotificationArgsFilter, { nullable: true })
-  @ValidateNested()
-  @Type(() => NotificationArgsFilter)
-  @IsOptional()
-  is?: NotificationArgsFilter | null;
-
-  @Field(() => NotificationArgsFilter, { nullable: true })
-  @ValidateNested()
-  @Type(() => NotificationArgsFilter)
-  @IsOptional()
-  isNot?: NotificationArgsFilter | null;
 }

@@ -19,6 +19,12 @@ export class UserArgsFilter {
   @IsOptional()
   OR?: UserArgsFilter[];
 
+  @Field(() => UserArgsFilter, { nullable: true })
+  @ValidateNested()
+  @Type(() => UserArgsFilter)
+  @IsOptional()
+  NOT?: UserArgsFilter;
+
   @Field(() => NotificationListRelationFilter, { nullable: true })
   @ValidateNested()
   @Type(() => NotificationListRelationFilter)
@@ -60,19 +66,4 @@ export class UserListRelationFilter {
   @Type(() => UserArgsFilter)
   @IsOptional()
   none?: UserArgsFilter;
-}
-
-@InputType()
-export class UserRelationFilter {
-  @Field(() => UserArgsFilter, { nullable: true })
-  @ValidateNested()
-  @Type(() => UserArgsFilter)
-  @IsOptional()
-  is?: UserArgsFilter | null;
-
-  @Field(() => UserArgsFilter, { nullable: true })
-  @ValidateNested()
-  @Type(() => UserArgsFilter)
-  @IsOptional()
-  isNot?: UserArgsFilter | null;
 }

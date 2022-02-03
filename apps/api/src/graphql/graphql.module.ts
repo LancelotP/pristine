@@ -4,7 +4,7 @@ import { GraphQLModule as NestGraphQLModule } from '@nestjs/graphql';
 @Module({
   imports: [
     NestGraphQLModule.forRoot({
-      autoSchemaFile: true,
+      autoSchemaFile: 'schema.gql',
       sortSchema: true,
       path: 'graphql',
       playground: {
