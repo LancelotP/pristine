@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import type { QueryBuilderConfig } from '../components/organisms/QueryBuilder/QueryBuilder';
 import { QueryBuilder } from '../components/organisms/QueryBuilder/QueryBuilder';
-import { QueryVisualizer } from '../components/organisms/QueryVisualizer/QueryVisualizer';
 
 export function App() {
   const config: QueryBuilderConfig = {
@@ -92,7 +91,6 @@ export function App() {
   return (
     <div>
       <QueryBuilder config={config} value={query} onChange={setQuery} />
-      <QueryVisualizer config={config} query={query} />
     </div>
   );
   // return ;

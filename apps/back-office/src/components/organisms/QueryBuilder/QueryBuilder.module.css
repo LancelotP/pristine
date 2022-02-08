@@ -7,7 +7,16 @@
   border: 1px solid black;
 }
 
-.root {}
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.root__graph {
+  width: 100%;
+  overflow-x: scroll;
+  overflow-y: hidden;
+}
 
 .group {
   background: rgba(250, 240, 210, 0.5);

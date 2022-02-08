@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { QueryVisualizer } from '../QueryVisualizer/QueryVisualizer';
 import styles from './QueryBuilder.module.css';
 import { QueryBuilderGroup } from './QueryBuilderGroup';
 import { queryExport } from './utils/queryExport';
@@ -16,24 +17,70 @@ export const QueryBuilder = (props: QueryBuilderProps) => {
 
   const [query, setQuery] = useState<Query>(queryImport(config, value));
 
+  const [isGraphShown, setShowGraph] = useState(false);
+  const [isTreeShown, setShowTree] = useState(false);
+  const [isQueryShown, setShowQuery] = useState(false);
+
+  useEffect(() => {
+    setQuery(queryImport(config, value));
+  }, [config, value]);
+
   const handleChange = (value: Query) => {
     setQuery(value);
     onChange(queryExport(config, value));
   };
 
+  const handleExport = async () => {
+    await navigator.clipboard.writeText(JSON.stringify(value, null, 2));
+
+    alert('Query copier dans le presse-papier');
+  };
+
+  const handleImport = () => {
+    const input = prompt('Coller votre query');
+
+    if (input === null) return;
+
+    try {
+      onChange(JSON.parse(input));
+    } catch (err) {
+      alert('Une erreur est survenue');
+    }
+  };
+
   return (
     <div className={styles['root']}>
-      <QueryBuilderGroup
-        config={config}
-        query={query}
-        setQuery={handleChange}
-        path={[]}
-      />
-      <hr />
-      <div className={styles['debug']}>
-        <pre>{JSON.stringify(query, null, 2)}</pre>
-        <pre>{JSON.stringify(queryExport(config, query), null, 2)}</pre>
+      <div className={styles['root__header']}>
+        <button onClick={handleExport}>Export</button>
+        <button onClick={handleImport}>Import</button>
+        <button onClick={() => setShowGraph(!isGraphShown)}>
+          {isGraphShown ? 'Hide' : 'Show'} graph
+        </button>
+        <button onClick={() => setShowTree(!isTreeShown)}>
+          {isTreeShown ? 'Hide' : 'Show'} tree
+        </button>
+        <button onClick={() => setShowQuery(!isQueryShown)}>
+          {isQueryShown ? 'Hide' : 'Show'} query
+        </button>
       </div>
+      <div className={styles['root__content']}>
+        <QueryBuilderGroup
+          config={config}
+          query={query}
+          setQuery={handleChange}
+        />
+      </div>
+      {isGraphShown && (
+        <div className={styles['root__graph']}>
+          <QueryVisualizer config={config} query={value} />
+        </div>
+      )}
+      {(isTreeShown || isQueryShown) && (
+        <div className={styles['root_debug']}>
+          {isTreeShown && <pre>{JSON.stringify(query, null, 2)}</pre>}
+          {isQueryShown && <pre>{JSON.stringify(value, null, 2)}</pre>}
+        </div>
+      )}
     </div>
   );
 };

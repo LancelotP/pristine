@@ -17,7 +17,7 @@ type QueryBuilderGroupProps = {
   config: QueryBuilderConfig;
   query: Query;
   setQuery: (q: Query) => void;
-  path: string[];
+  path?: string[];
   modes?: {
     value: string;
     onChange: (mode: string) => void;
@@ -27,7 +27,15 @@ type QueryBuilderGroupProps = {
 };
 
 export const QueryBuilderGroup = (props: QueryBuilderGroupProps) => {
-  const { query, path, setQuery, config, className, modes, onRemove } = props;
+  const {
+    query,
+    path = [],
+    setQuery,
+    config,
+    className,
+    modes,
+    onRemove,
+  } = props;
 
   const root: QueryGroup = path.length > 0 ? get(query, path) : query;
 
@@ -105,7 +113,7 @@ export const QueryBuilderGroup = (props: QueryBuilderGroupProps) => {
 
         {onRemove !== undefined && (
           <button className={styles['group__remove']} onClick={onRemove}>
-            supprimer
+            remove
           </button>
         )}
         <div className={styles['group__add']}>

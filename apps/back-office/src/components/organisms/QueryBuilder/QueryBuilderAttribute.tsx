@@ -120,7 +120,7 @@ export const QueryBuilderAttribute = (props: QueryBuilderAttributeProps) => {
           </div>
         )}
         <button onClick={onRemove} className={styles['attribute__remove']}>
-          Supprimer
+          remove
         </button>
       </div>
     </div>
