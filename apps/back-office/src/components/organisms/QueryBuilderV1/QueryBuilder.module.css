@@ -1,0 +1,40 @@
+.root {
+  
+}
+
+.header {}
+
+.content {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.group {
+  background-color: rgba(250,240,210,.5);
+  border: 1px solid #dcc896;
+  padding: 8px;
+}
+
+.group__header {
+  margin-bottom: 12px;
+}
+
+.group__content {
+}
+
+.group__content__wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: -4px;
+}
+
+.group__item {
+  margin: 4px;
+}
+
+.property {
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,73 @@
+.blocks {
+  margin: -8px;
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.block {
+  --blockBorderColor: black;
+  --blockBackgroundColor: rgba(0,0,0,.2);
+  
+  width: 192px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: var(--blockBorderColor);
+  border: 2px solid var(--blockBorderColor);
+  background-color: var(--blockBackgroundColor);
+  border-radius: 4px;
+  margin: 8px;
+
+  font-size: 24px;
+  font-family: 'Virgil';
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+}
+
+.group {
+  display: flex;
+}
+
+.block--ghost {
+  visibility: hidden;
+}
+
+.block--target {
+  --blockBorderColor: #0b7385;
+  --blockBackgroundColor: #0b738535;
+}
+
+.block--modifier {
+  --blockBorderColor: #862e9c;
+  --blockBackgroundColor: #862e9c35;
+}
+
+.block--property {
+  --blockBorderColor: #364fc7;
+  --blockBackgroundColor: #364fc735;
+}
+
+.block--operation {
+  --blockBorderColor: #c92a2a;
+  --blockBackgroundColor: #c92a2a35;
+}
+
+.block--value {
+  --blockBorderColor: #000000;
+  --blockBackgroundColor: #00000035;
+}
+
+.block--aggregation {
+  --blockBorderColor: #5c940d;
+  --blockBackgroundColor: #5c940d35;
+}
+
+.block--group {
+  --blockBorderColor: #e67700;
+  --blockBackgroundColor: #e6770035;
+}

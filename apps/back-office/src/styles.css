@@ -1,0 +1,7 @@
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'Virgil';
+  src: local('Virgil'), url(./assets/fonts/Virgil.woff2) format('woff2');
+  /* other formats include: 'woff2', 'truetype, 'opentype',
+                            'embedded-opentype', and 'svg' */
+}

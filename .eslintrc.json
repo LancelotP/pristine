@@ -26,7 +26,7 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nrwl/nx/typescript"],
       "parserOptions": {
-        "project": ["apps/api/tsconfig.*?.json"]
+        "project": ["apps/*/tsconfig.*?.json"]
       },
       "rules": {
         "@typescript-eslint/no-unused-vars": "off",
@@ -59,59 +59,7 @@
         "@typescript-eslint/non-nullable-type-assertion-style": "error",
         "@typescript-eslint/consistent-indexed-object-style": "error",
         "@typescript-eslint/ban-types": "error",
-        "camelcase": "off",
-        "@typescript-eslint/naming-convention": [
-          "error",
-          {
-            "selector": "default",
-            "format": ["camelCase"]
-          },
-          {
-            "selector": "variable",
-            "format": ["camelCase", "UPPER_CASE"]
-          },
-          {
-            "selector": "parameter",
-            "format": ["camelCase"],
-            "leadingUnderscore": "allow"
-          },
-          {
-            "selector": "property",
-            "format": ["camelCase", "UPPER_CASE"]
-          },
-          {
-            "selector": "property",
-            "modifiers": ["private"],
-            "format": ["camelCase"],
-            "leadingUnderscore": "require"
-          },
-          {
-            "selector": "property",
-            "modifiers": ["protected"],
-            "format": ["camelCase"],
-            "leadingUnderscore": "require"
-          },
-          {
-            "selector": "method",
-            "modifiers": ["private"],
-            "format": ["camelCase"],
-            "leadingUnderscore": "require"
-          },
-          {
-            "selector": "method",
-            "modifiers": ["protected"],
-            "format": ["camelCase"],
-            "leadingUnderscore": "require"
-          },
-          {
-            "selector": "typeLike",
-            "format": ["PascalCase"]
-          },
-          {
-            "selector": "enumMember",
-            "format": ["PascalCase"]
-          }
-        ]
+        "camelcase": "off"
       }
     },
     {

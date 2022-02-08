@@ -3,6 +3,7 @@ import { Type } from 'class-transformer';
 import { IsOptional, ValidateNested } from 'class-validator';
 
 import { StringFilter } from '../../core/dto/string.filter.dto';
+import type { ListRelationFilter } from '../../notification/dto/notification.dto';
 import { NotificationListRelationFilter } from '../../notification/dto/notification.dto';
 
 @InputType()
@@ -48,22 +49,22 @@ export class UserArgs {
 }
 
 @InputType()
-export class UserListRelationFilter {
+export class UserListRelationFilter implements ListRelationFilter {
   @Field(() => UserArgsFilter, { nullable: true })
   @ValidateNested()
   @Type(() => UserArgsFilter)
   @IsOptional()
-  every?: UserArgsFilter;
+  EVERY?: UserArgsFilter;
 
   @Field(() => UserArgsFilter, { nullable: true })
   @ValidateNested()
   @Type(() => UserArgsFilter)
   @IsOptional()
-  some?: UserArgsFilter;
+  SOME?: UserArgsFilter;
 
   @Field(() => UserArgsFilter, { nullable: true })
   @ValidateNested()
   @Type(() => UserArgsFilter)
   @IsOptional()
-  none?: UserArgsFilter;
+  NONE?: UserArgsFilter;
 }

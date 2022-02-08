@@ -1,0 +1,153 @@
+.debug {
+  display: flex;
+}
+
+.debug > * {
+  flex: 1 1 0;
+  border: 1px solid black;
+}
+
+.root {}
+
+.group {
+  background: rgba(250, 240, 210, 0.5);
+  box-shadow: 0 0 0 1px #DCC896;
+  padding: 8px;
+}
+
+.group__header {
+  margin-bottom: 12px;
+
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.group__modes {
+  margin: 0 8px;
+}
+
+.group__modes > .group__mode {
+  border-radius: 0;
+}
+
+.group__modes > .group__mode:first-child {
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.group__modes > .group__mode:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.group__mode {
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: .15s ease-in-out;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  vertical-align: middle;
+  cursor: pointer;
+  
+  color: #212529;
+  background: none;
+  background-color: #f8f9fa;
+}
+
+.group__mode:not(.group__mode--active):hover {
+  background-color: #e2e6ea;
+}
+
+.group__mode--active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.group__add {
+  margin-left: auto;
+}
+
+.group__remove {
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: .15s ease-in-out;
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  border: none;
+  vertical-align: middle;
+  cursor: pointer;
+  
+  color: #fff;
+  background: none;
+  background-color: #dc3545;
+}
+
+.group__remove:hover {
+  background-color: #c82333;
+}
+
+.group__content {
+  position: relative;
+  padding-left: 20px;
+}
+
+.group__content > * {
+  position: relative;
+}
+
+.group__content > * + * {
+  margin-top: 8px;
+}
+
+.group__content > *::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 2px;
+  top: calc(50% - 1px);
+  left: -16px;
+  background-color: red;
+}
+
+.group__content > *::before {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: calc(100% + 8px);
+  top: 0;
+  left: -16px;
+  background-color: red;
+}
+
+.group__content > *:last-child::before {
+  height: 50%;
+}
+
+
+
+.rule {}
+
+.attribute {}
+
+.attribute__content {
+  display: flex;
+  align-items: center;
+}
+
+.attribute__remove {
+  margin-left: auto;
+}
+
+.operation {}
+
+.value {}

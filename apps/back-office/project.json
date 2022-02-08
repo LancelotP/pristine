@@ -1,0 +1,70 @@
+{
+  "root": "apps/back-office",
+  "sourceRoot": "apps/back-office/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/web:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "compiler": "babel",
+        "outputPath": "dist/apps/back-office",
+        "index": "apps/back-office/src/index.html",
+        "baseHref": "/",
+        "main": "apps/back-office/src/main.tsx",
+        "polyfills": "apps/back-office/src/polyfills.ts",
+        "tsConfig": "apps/back-office/tsconfig.app.json",
+        "assets": ["apps/back-office/src/favicon.ico", "apps/back-office/src/assets"],
+        "styles": ["apps/back-office/src/styles.css"],
+        "scripts": [],
+        "webpackConfig": "@nrwl/react/plugins/webpack"
+      },
+      "configurations": {
+        "production": {
+          "fileReplacements": [
+            {
+              "replace": "apps/back-office/src/environments/environment.ts",
+              "with": "apps/back-office/src/environments/environment.prod.ts"
+            }
+          ],
+          "optimization": true,
+          "outputHashing": "all",
+          "sourceMap": false,
+          "namedChunks": false,
+          "extractLicenses": true,
+          "vendorChunk": false
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nrwl/web:dev-server",
+      "options": {
+        "buildTarget": "back-office:build",
+        "hmr": true
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "back-office:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/back-office/**/*.{ts,tsx,js,jsx}"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/apps/back-office"],
+      "options": {
+        "jestConfig": "apps/back-office/jest.config.js",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

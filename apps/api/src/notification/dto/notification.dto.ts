@@ -47,22 +47,28 @@ export class NotificationArgs {
 }
 
 @InputType()
-export class NotificationListRelationFilter {
+export class NotificationListRelationFilter implements ListRelationFilter {
   @Field(() => NotificationArgsFilter, { nullable: true })
   @ValidateNested()
   @Type(() => NotificationArgsFilter)
   @IsOptional()
-  every?: NotificationArgsFilter;
+  EVERY?: NotificationArgsFilter;
 
   @Field(() => NotificationArgsFilter, { nullable: true })
   @ValidateNested()
   @Type(() => NotificationArgsFilter)
   @IsOptional()
-  some?: NotificationArgsFilter;
+  SOME?: NotificationArgsFilter;
 
   @Field(() => NotificationArgsFilter, { nullable: true })
   @ValidateNested()
   @Type(() => NotificationArgsFilter)
   @IsOptional()
-  none?: NotificationArgsFilter;
+  NONE?: NotificationArgsFilter;
+}
+
+export class ListRelationFilter {
+  EVERY?: any;
+  SOME?: any;
+  NONE?: any;
 }
