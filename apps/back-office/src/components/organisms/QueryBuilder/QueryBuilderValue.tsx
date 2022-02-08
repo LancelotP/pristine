@@ -1,5 +1,6 @@
 import { get, set } from 'lodash';
 import type { ChangeEventHandler } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { Query, QueryAttribute, QueryBuilderConfig } from './QueryBuilder';
 
@@ -62,50 +63,54 @@ type QueryBuilderValueComponentProps = {
 
 const QueryBuilderValueString = (props: QueryBuilderValueComponentProps) => {
   const { value, onChange } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setInnerValue(e.target.value);
     onChange(e.target.value);
   };
 
-  return (
-    <input
-      type="text"
-      value={value as string | undefined}
-      onChange={handleChange}
-    />
-  );
+  useEffect(() => {
+    setInnerValue(value as string);
+  }, [value]);
+
+  return <input type="text" value={innerValue} onChange={handleChange} />;
 };
 
 const QueryBuilderValueFloat = (props: QueryBuilderValueComponentProps) => {
   const { value, onChange } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    onChange(parseFloat(e.target.value));
+    const parsedValue = parseFloat(e.target.value);
+
+    setInnerValue(e.target.value);
+    onChange(isNaN(parsedValue) ? undefined : parsedValue);
   };
 
-  return (
-    <input
-      type="number"
-      value={value as number | undefined}
-      onChange={handleChange}
-    />
-  );
+  useEffect(() => {
+    setInnerValue(`${value}`);
+  }, [value]);
+
+  return <input type="number" value={innerValue} onChange={handleChange} />;
 };
 
 const QueryBuilderValueInteger = (props: QueryBuilderValueComponentProps) => {
   const { value, onChange } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
-    onChange(parseInt(e.target.value));
+    const parsedValue = parseInt(e.target.value);
+
+    setInnerValue(e.target.value);
+    onChange(isNaN(parsedValue) ? undefined : parsedValue);
   };
 
-  return (
-    <input
-      type="number"
-      value={value as number | undefined}
-      onChange={handleChange}
-    />
-  );
+  useEffect(() => {
+    setInnerValue(`${value}`);
+  }, [value]);
+
+  return <input type="number" value={innerValue} onChange={handleChange} />;
 };
 
 const QueryBuilderValueEnum = (
@@ -114,13 +119,19 @@ const QueryBuilderValueEnum = (
   },
 ) => {
   const { value, onChange, options } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
+    setInnerValue(e.target.value);
     onChange(e.target.value);
   };
 
+  useEffect(() => {
+    setInnerValue(value as string);
+  }, [value]);
+
   return (
-    <select defaultValue="" value={value as string} onChange={handleChange}>
+    <select defaultValue="" value={innerValue} onChange={handleChange}>
       <option value="" disabled />
       {options.map((option) => (
         <option value={option.value} key={option.value}>
@@ -133,52 +144,56 @@ const QueryBuilderValueEnum = (
 
 const QueryBuilderValueDate = (props: QueryBuilderValueComponentProps) => {
   const { value, onChange } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setInnerValue(e.target.value);
     onChange(e.target.value);
   };
 
-  return (
-    <input
-      type="date"
-      value={value as string | undefined}
-      onChange={handleChange}
-    />
-  );
+  useEffect(() => {
+    setInnerValue(value as string);
+  }, [value]);
+
+  return <input type="date" value={innerValue} onChange={handleChange} />;
 };
 
 const QueryBuilderValueDatetime = (props: QueryBuilderValueComponentProps) => {
   const { value, onChange } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setInnerValue(e.target.value);
     onChange(e.target.value);
   };
 
   // FIXME
 
+  useEffect(() => {
+    setInnerValue(value as string);
+  }, [value]);
+
   return (
-    <input
-      type="datetime-local"
-      value={value as string | undefined}
-      onChange={handleChange}
-    />
+    <input type="datetime-local" value={innerValue} onChange={handleChange} />
   );
 };
 
 const QueryBuilderValueTime = (props: QueryBuilderValueComponentProps) => {
   const { value, onChange } = props;
+  const [innerValue, setInnerValue] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setInnerValue(e.target.value);
     onChange(e.target.value);
   };
 
-  return (
-    <input
-      type="time"
-      value={value as string | undefined}
-      onChange={handleChange}
-    />
-  );
+  // FIXME
+
+  useEffect(() => {
+    setInnerValue(value as string);
+  }, [value]);
+
+  return <input type="time" value={innerValue} onChange={handleChange} />;
 };
 
 const QueryBuilderValueBoolean = (props: QueryBuilderValueComponentProps) => {

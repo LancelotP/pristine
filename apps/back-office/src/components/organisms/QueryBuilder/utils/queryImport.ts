@@ -1,4 +1,5 @@
 import type {
+  ModelPropertyRelationOne,
   Query,
   QueryAttribute,
   QueryBuilderConfig,
@@ -6,112 +7,124 @@ import type {
   QueryRelationMany,
   QueryRelationOne,
 } from '../QueryBuilder';
+import type {
+  AGGREGATION_OPERANDS,
+  GROUP_OPERANDS,
+  OPERATION_OPERANDS,
+} from './operand';
 import {
+  getOperandType,
   isAggregationOperand,
   isGroupOperand,
-  isModifierOperand,
   isOperationOperand,
 } from './operand';
 
 export function queryImport(config: QueryBuilderConfig, input: any): Query {
-  const root: QueryGroup = {
-    type: 'group',
-    mode: 'AND',
-    target: config.target,
-    value: [],
-  };
+  const mode = Object.keys(input).filter((key) =>
+    isGroupOperand(key),
+  )[0] as typeof GROUP_OPERANDS[number];
 
-  const keys = Object.keys(input);
-
-  if (keys.length === 1 && keys.includes('OR')) {
-    root.mode = 'OR';
-  } else if (keys.includes('OR')) {
-    keys.splice(keys.indexOf('OR'), 1);
-  }
-
-  Object.keys(input).forEach((key) => {
-    const isGroup = isGroupOperand(key);
-    const isModifier = isModifierOperand(key);
-    const isOperation = isOperationOperand(key);
-    const isAggregation = isAggregationOperand(key);
-    const isProperty = ![isGroup, isModifier, isOperation, isAggregation].some(
-      Boolean,
-    );
-
-    const isRelationMany =
-      isProperty && config.models[root.target][key].type === 'relation-many';
-
-    const isRelationOne =
-      isProperty && config.models[root.target][key].type === 'relation-one';
-
-    const isAttribute = isProperty && !isRelationMany && !isRelationMany;
-
-    console.log({
-      key,
-      isGroup,
-      isModifier,
-      isOperation,
-      isAggregation,
-      isProperty,
-      isRelationMany,
-      isRelationOne,
-      isAttribute,
-    });
-
-    if (isGroup) {
-      root.value.push(queryGroupImport(config, input[key], key, config.target));
-    }
-
-    if (isAttribute) {
-      root.value.push(
-        queryAttributeImport(config, input[key], key, config.target),
-      );
-    }
-  });
-
-  return root;
+  return queryGroupImport(config, config.target, mode, input[mode]);
 }
 
 function queryGroupImport(
   config: QueryBuilderConfig,
-  input: any,
-  key: string,
   target: string,
+  mode: QueryGroup['mode'],
+  value: any,
 ): QueryGroup {
   const group: QueryGroup = {
     type: 'group',
-    mode: 'AND',
-    target: config.target,
+    mode,
+    model: target,
     value: [],
   };
+
+  value?.forEach((v: any) => {
+    const operand = Object.keys(v)[0];
+    const operandType = getOperandType(config, target, operand);
+    const content = v[operand];
+
+    if (operandType === 'GROUP') {
+      group.value.push(
+        queryGroupImport(
+          config,
+          target,
+          operand as QueryGroup['mode'],
+          content,
+        ),
+      );
+    }
+
+    if (operandType === 'RELATION_ONE') {
+      const relationTarget = config.models[target][
+        operand
+      ] as ModelPropertyRelationOne<string>;
+
+      group.value.push(
+        queryRelationOneImport(config, relationTarget.target, operand, content),
+      );
+    }
+
+    if (operandType === 'RELATION_MANY') {
+      const relationTarget = config.models[target][
+        operand
+      ] as ModelPropertyRelationOne<string>;
+
+      group.value.push(
+        queryRelationManyImport(
+          config,
+          relationTarget.target,
+          operand,
+          content,
+        ),
+      );
+    }
+
+    if (operandType === 'ATTRIBUTE') {
+      group.value.push(queryAttributeImport(config, target, operand, content));
+    }
+  });
 
   return group;
 }
 
 function queryAttributeImport(
   config: QueryBuilderConfig,
-  input: any,
-  key: string,
   target: string,
+  attribute: string,
+  value: any,
 ): QueryAttribute {
-  const attribute: QueryAttribute = {
+  const operation = Object.keys(value).filter((key) =>
+    isOperationOperand(key),
+  )[0] as typeof OPERATION_OPERANDS[number] | undefined;
+
+  const attr: QueryAttribute = {
     type: 'attribute',
-    model: config.target,
+    model: target,
+    attribute,
+    operation,
+    value: operation !== undefined ? value[operation] : undefined,
   };
 
-  return attribute;
+  return attr;
 }
 
 function queryRelationOneImport(
   config: QueryBuilderConfig,
-  input: any,
-  key: string,
   target: string,
+  attribute: string,
+  value: any,
 ): QueryRelationOne {
+  const mode = Object.keys(value).filter((key) =>
+    isGroupOperand(key),
+  )[0] as typeof GROUP_OPERANDS[number];
+
   const relation: QueryRelationOne = {
     type: 'relation-one',
-    model: config.target,
-    attribute: '',
+    model: target,
+    attribute,
+    value: queryGroupImport(config, target, mode, value[mode]),
   };
 
   return relation;
@@ -119,16 +132,24 @@ function queryRelationOneImport(
 
 function queryRelationManyImport(
   config: QueryBuilderConfig,
-  input: any,
-  key: string,
   target: string,
+  attribute: string,
+  value: any,
 ): QueryRelationMany {
+  const mode = Object.keys(value).filter((key) =>
+    isAggregationOperand(key),
+  )[0] as typeof AGGREGATION_OPERANDS[number];
+
+  const groupMode = Object.keys(value[mode]).filter((key) =>
+    isGroupOperand(key),
+  )[0] as typeof GROUP_OPERANDS[number];
+
   const relation: QueryRelationMany = {
     type: 'relation-many',
-    model: config.target,
-    attribute: '',
-    mode: 'EVERY',
-    value: queryGroupImport(config, input, key, target),
+    model: target,
+    mode,
+    attribute,
+    value: queryGroupImport(config, target, groupMode, value[mode][groupMode]),
   };
 
   return relation;

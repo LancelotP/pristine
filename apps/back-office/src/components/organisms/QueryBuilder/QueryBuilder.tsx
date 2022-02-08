@@ -130,7 +130,7 @@ export type QueryRelationMany = {
 };
 
 export type QueryGroup = {
-  target: string;
+  model: string;
   type: 'group';
   mode: 'AND' | 'OR';
   value: (QueryGroup | QueryAttribute | QueryRelationOne | QueryRelationMany)[];

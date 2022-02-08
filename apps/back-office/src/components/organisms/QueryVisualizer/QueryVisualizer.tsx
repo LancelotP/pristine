@@ -17,8 +17,6 @@ export type QueryVisualizerProps = {
 export const QueryVisualizer = (props: QueryVisualizerProps) => {
   const { query, config } = props;
 
-  // return <pre>{JSON.stringify(query, null, 2)}</pre>;
-
   return (
     <div className={styles['blocks']}>
       <div className={classNames(styles['block'], styles['block--target'])}>
@@ -45,14 +43,6 @@ export const InnerQueryVisualizer = (props: QueryVisualizerProps) => {
           isOperation,
           isAggregation,
         ].some(Boolean);
-
-        console.log({
-          isGroup,
-          isModifier,
-          isOperation,
-          isAggregation,
-          isProperty,
-        });
 
         return (
           <div key={key} className={styles['group']}>

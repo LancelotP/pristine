@@ -38,7 +38,7 @@ export const QueryBuilderGroup = (props: QueryBuilderGroupProps) => {
   const handleAttributeAdd = () => {
     const attribute: QueryAttribute = {
       type: 'attribute',
-      model: root.target,
+      model: root.model,
     };
 
     setQuery(set({ ...query }, [...path, 'value'], [...root.value, attribute]));
@@ -56,7 +56,7 @@ export const QueryBuilderGroup = (props: QueryBuilderGroupProps) => {
 
   const handleGroupAdd = () => {
     const newGroup: QueryGroup = {
-      target: root.target,
+      model: root.model,
       type: 'group',
       mode: 'AND',
       value: [],
@@ -73,6 +73,7 @@ export const QueryBuilderGroup = (props: QueryBuilderGroupProps) => {
           <div className={styles['group__modes']}>
             {modes.options.map((option) => (
               <button
+                key={option.value}
                 className={classnames(styles['group__mode'], {
                   [styles['group__mode--active']]: modes.value === option.value,
                 })}
@@ -171,5 +172,5 @@ export const QueryBuilderGroup = (props: QueryBuilderGroupProps) => {
 };
 
 function getGroupName(query: QueryGroup, path: string[]) {
-  return get(query, [...path.slice(0, -1), 'attribute'], query.target);
+  return get(query, [...path.slice(0, -1), 'attribute'], query.model);
 }

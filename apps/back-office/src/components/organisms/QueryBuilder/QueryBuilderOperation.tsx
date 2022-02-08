@@ -1,5 +1,6 @@
 import { get, set } from 'lodash';
 import type { ChangeEventHandler } from 'react';
+import { useEffect, useState } from 'react';
 
 import type { Query, QueryAttribute, QueryBuilderConfig } from './QueryBuilder';
 import styles from './QueryBuilder.module.css';
@@ -17,18 +18,24 @@ export const QueryBuilderOperation = (props: QueryBuilderOperationProps) => {
 
   const root: QueryAttribute = path.length > 0 ? get(query, path) : query;
 
+  const [operation, setOperation] = useState('');
+
+  useEffect(() => {
+    setOperation(root.operation ?? '');
+  }, [root.operation]);
+
   const handleOperationChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const value = e.target.value;
 
+    setOperation(value);
     setQuery(set({ ...query }, [...path, 'operation'], value));
   };
 
   return (
     <select
       className={styles['operation']}
-      value={root.operation}
+      value={operation}
       onChange={handleOperationChange}
-      defaultValue=""
     >
       <option value="" disabled />
       {getOperationsByAttribute(config, root).map((operation) => (

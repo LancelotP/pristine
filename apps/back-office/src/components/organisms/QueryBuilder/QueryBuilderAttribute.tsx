@@ -1,5 +1,6 @@
 import { get, set } from 'lodash';
 import type { ChangeEventHandler } from 'react';
+import { useEffect, useState } from 'react';
 
 import type {
   Query,
@@ -25,6 +26,12 @@ export const QueryBuilderAttribute = (props: QueryBuilderAttributeProps) => {
 
   const root: QueryAttribute = path.length > 0 ? get(query, path) : query;
 
+  const [attribute, setAttribute] = useState('');
+
+  useEffect(() => {
+    setAttribute(root.attribute ?? '');
+  }, [root.attribute]);
+
   const attributes = Object.keys(config.models[root.model]).map((key) => ({
     type: config.models[root.model][key].type,
     label: key,
@@ -34,6 +41,8 @@ export const QueryBuilderAttribute = (props: QueryBuilderAttributeProps) => {
   const handleAttributeChange: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const value = e.target.value;
     const model = config.models[root.model];
+
+    setAttribute(value);
 
     const modelProperty = model[value];
 
@@ -45,7 +54,7 @@ export const QueryBuilderAttribute = (props: QueryBuilderAttributeProps) => {
         value: {
           type: 'group',
           mode: 'AND',
-          target: modelProperty.target,
+          model: modelProperty.target,
           value: [],
         },
       };
@@ -60,7 +69,7 @@ export const QueryBuilderAttribute = (props: QueryBuilderAttributeProps) => {
         value: {
           type: 'group',
           mode: 'AND',
-          target: modelProperty.target,
+          model: modelProperty.target,
           value: [],
         },
       };
@@ -81,11 +90,7 @@ export const QueryBuilderAttribute = (props: QueryBuilderAttributeProps) => {
     <div className={styles['attribute']}>
       <div className={styles['attribute__content']}>
         <div className={styles['attribute__attribute']}>
-          <select
-            value={root.attribute}
-            defaultValue=""
-            onChange={handleAttributeChange}
-          >
+          <select value={attribute} onChange={handleAttributeChange}>
             <option value="" disabled />
             {attributes.map((attr) => (
               <option value={attr.value} key={attr.value}>

@@ -54,42 +54,39 @@ export function App() {
   };
 
   const [query, setQuery] = useState<any>({
-    // email: {
-    //   equals: 'l;k',
-    // },
-    // AND: [
-    //   {
-    //     OR: [
-    //       {
-    //         AND: [],
-    //       },
-    //       {
-    //         notifications: {
-    //           EVERY: {
-    //             AND: [
-    //               {
-    //                 author: {
-    //                   AND: [
-    //                     {
-    //                       email: {
-    //                         equals: 'kjlkj',
-    //                       },
-    //                     },
-    //                     {
-    //                       email: {
-    //                         equals: 'ACTIVE',
-    //                       },
-    //                     },
-    //                   ],
-    //                 },
-    //               },
-    //             ],
-    //           },
-    //         },
-    //       },
-    //     ],
-    //   },
-    // ],
+    AND: [
+      {
+        companyMembership: {
+          AND: [
+            {
+              company: {
+                AND: [
+                  {
+                    memberships: {
+                      EVERY: {
+                        AND: [
+                          {
+                            user: {
+                              OR: [
+                                {
+                                  email: {
+                                    contains: 'happy',
+                                  },
+                                },
+                              ],
+                            },
+                          },
+                        ],
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+        },
+      },
+    ],
   });
 
   return (
